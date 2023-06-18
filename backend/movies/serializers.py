@@ -1,4 +1,7 @@
+import math
+
 from django.db.models import Avg
+from django.db.models.functions import Round
 from rest_framework.fields import SerializerMethodField
 from rest_framework.relations import SlugRelatedField
 from rest_framework.serializers import ModelSerializer
@@ -21,7 +24,7 @@ class MovieFullSerializer(ModelSerializer):
         fields = ["id", "title", "description", "actors", "reviews", "grade_avg"]
 
     def get_grade_avg(self, obj):
-        return self.instance.reviews.aggregate(grade_avg=Avg("grade"))["grade_avg"]
+        return self.instance.reviews.aggregate(grade_avg=Round(Avg("grade"), 2))["grade_avg"]
 
 
 class ReviewSerializer(ModelSerializer):
