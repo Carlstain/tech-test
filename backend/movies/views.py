@@ -5,12 +5,14 @@ from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet
 
 from movies.models import Movie
+from common.pagination_classes import DefaultMovieResultsSetPagination
 from movies.serializers import MovieFullSerializer, MovieSerializer, ReviewSerializer
 
 
 class MovieViewSet(ModelViewSet):
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.all().order_by("title")
     serializer_class = MovieFullSerializer
+    pagination_class = DefaultMovieResultsSetPagination
     http_method_names = ["get", "post", "patch", "delete"]
 
     def get_serializer_class(self):
