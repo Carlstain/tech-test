@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from movies.models import Movie
 from common.pagination_classes import DefaultMovieResultsSetPagination
 from movies.serializers import MovieFullSerializer, MovieSerializer, ReviewSerializer
+from movies.tasks import process_review
 
 
 class MovieViewSet(ModelViewSet):
@@ -30,6 +31,7 @@ class MovieViewSet(ModelViewSet):
         request.data["movie"] = pk
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
+            process_review.delay()
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
