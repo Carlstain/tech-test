@@ -1,3 +1,8 @@
-from django.contrib import admin
+from django.contrib.admin import ModelAdmin, register
 
-# Register your models here.
+from actors.models import Actor
+
+
+@register(Actor)
+class ActorAdmin(ModelAdmin):
+    pass
