@@ -28,3 +28,4 @@ class ReviewSerializer(ModelSerializer):
     class Meta:
         model = Review
         fields = "__all__"
+        extra_kwargs = {"movie": {"write_only": True}}
