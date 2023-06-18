@@ -1,5 +1,4 @@
 <script setup>
-import HelloWorld from './views/MovieList.vue'
 </script>
 
 <template>
