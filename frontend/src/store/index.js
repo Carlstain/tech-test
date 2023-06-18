@@ -26,7 +26,7 @@ const store = createStore({
           );
         },
         getMovie({ commit }, movieId) {
-            axios.get(`"http://localhost:8000/rest-api/movies/${movieId}/"`).then(
+            axios.get(`http://localhost:8000/rest-api/movies/${movieId}/`).then(
                 (response) => {
                     commit('setMovie', response.data)
                 }
