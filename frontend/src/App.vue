@@ -2,9 +2,13 @@
 </script>
 
 <template>
-  <div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-container>
+      <v-card class="pa-8">
+        <router-view />
+      </v-card>
+    </v-container>
+  </v-app>
 </template>
 
 <style scoped>

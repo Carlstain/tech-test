@@ -23,25 +23,43 @@ onMounted( () => {
 </script>
 
 <template>
-  <h1> MovieList </h1>
-  <div v-if="store.state.movies">
-    <div v-for="movie in store.state.movies.results">
-      <p @click="goToMovie(movie.id)">{{ movie.title }}</p>
-    </div>
-    <button
-        @click="getNextPage"
-        :disabled="!store.state.movies.next"
-    >
-      Next
-    </button>
-    <button
-        @click="getPreviousPage"
-        :disabled="!store.state.movies.previous"
-    >
-      Previous
-    </button>
-    <router-view />
-  </div>
+  <v-row>
+    <v-col class="text-center">
+      <h1> Movies </h1>
+    </v-col>
+  </v-row>
+  <v-row v-if="store.state.movies">
+    <v-col>
+      <v-list lines="one">
+        <v-list-item
+            v-for="movie in store.state.movies.results"
+            :key="movie.id"
+            :title="movie.title"
+            @click="goToMovie(movie.id)"
+        />
+      </v-list>
+      <v-row>
+        <v-col>
+          <v-btn
+              @click="getPreviousPage"
+              :disabled="!store.state.movies.previous"
+              class="mr-5"
+          >
+            Previous
+          </v-btn>
+          <v-btn
+              @click="getNextPage"
+              :disabled="!store.state.movies.next"
+          >
+            Next
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col>
+      <router-view />
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>
