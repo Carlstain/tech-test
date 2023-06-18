@@ -18,7 +18,7 @@ class MovieFullSerializer(ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ["id", "title", "description", "reviews", "grade_avg"]
+        fields = ["id", "title", "description", "actors", "reviews", "grade_avg"]
 
     def get_grade_avg(self, obj):
         return self.instance.reviews.aggregate(grade_avg=Avg("grade"))["grade_avg"]

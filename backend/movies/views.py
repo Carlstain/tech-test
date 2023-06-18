@@ -11,6 +11,7 @@ from movies.serializers import MovieFullSerializer, MovieSerializer, ReviewSeria
 class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieFullSerializer
+    http_method_names = ["get", "post", "patch", "delete"]
 
     def get_serializer_class(self):
         if self.action == "list":
