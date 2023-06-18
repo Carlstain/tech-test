@@ -3,8 +3,9 @@ import axios from "axios";
 
 const store = createStore({
     state: {
-        movies: null,
-        movie: null
+        movies: [],
+        movie: null,
+        actors: [],
     },
 
     mutations: {
@@ -14,6 +15,10 @@ const store = createStore({
 
         setMovie (state, payload) {
             state.movie = payload;
+        },
+
+        setActors (state, payload) {
+            state.actors = payload;
         }
     },
 
@@ -32,6 +37,16 @@ const store = createStore({
                 }
             )
         },
+        editMovie({ commit }, { movieId, data}) {
+          axios.patch(
+              `http://localhost:8000/rest-api/movies/${movieId}/`,
+              data
+          ).then(
+              (response) => {
+                  commit('setMovie', response.data)
+              }
+          )
+        },
         rateMovie({ commit, dispatch }, {movieId, grade}) {
             axios.post(
                 `http://localhost:8000/rest-api/movies/${movieId}/review/`,
@@ -40,7 +55,13 @@ const store = createStore({
                 .then((response) => {
                     dispatch('getMovie', movieId)
                 })
-        }
+        },
+        getActors({ commit }) {
+          axios.get(`http://localhost:8000/rest-api/actors/`)
+              .then(
+                  (response) => commit('setActors', response.data)
+              )
+        },
     }
 })
 

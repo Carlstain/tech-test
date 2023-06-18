@@ -28,7 +28,7 @@ onMounted( () => {
       <h1> Movies </h1>
     </v-col>
   </v-row>
-  <v-row v-if="store.state.movies">
+  <v-row>
     <v-col>
       <v-list lines="one">
         <v-list-item

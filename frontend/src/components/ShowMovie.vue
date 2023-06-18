@@ -4,15 +4,11 @@
       type: Array,
       default: () => [],
     },
-    grade_avg: Number,
     description: String
   })
 </script>
 
 <template>
-  <v-card-item>
-    <v-card-subtitle>Rating: {{ grade_avg }} / 5</v-card-subtitle>
-  </v-card-item>
   <v-card-text>
     <p class="description">{{ description }}</p>
     <p>
