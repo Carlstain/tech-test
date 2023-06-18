@@ -31,6 +31,15 @@ const store = createStore({
                     commit('setMovie', response.data)
                 }
             )
+        },
+        rateMovie({ commit, dispatch }, {movieId, grade}) {
+            axios.post(
+                `http://localhost:8000/rest-api/movies/${movieId}/review/`,
+                { grade }
+                )
+                .then((response) => {
+                    dispatch('getMovie', movieId)
+                })
         }
     }
 })
