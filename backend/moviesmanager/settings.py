@@ -142,3 +142,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
 }
+
+CELERY_BROKER_URL = f"amqp://{env.str('CELERY_BROKER_USERNAME')}:{env.str('CELERY_BROKER_PASSWORD')}@{env.str('CELERY_BROKER_HOST')}:{env.str('CELERY_BROKER_PORT')}"

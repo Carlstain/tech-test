@@ -60,7 +60,7 @@ services:
     build: ./backend
     volumes:
       - ./:/backend
-    command: celery -A core.celery worker --pool=prefork -l info
+    command: celery -A moviesmanager.celery worker --pool=prefork -l info
     depends_on:
       - rabbitmq
 
