@@ -8,7 +8,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import axios from "axios";
 
-axios.defaults.baseURL = new URL(`${import.meta.env.VITE_API_BASE_URL}/rest_api`).href;
+axios.defaults.baseURL = new URL(`${import.meta.env.VITE_API_BASE_URL}/rest-api`).href;
 
 const app = createApp(App);
 

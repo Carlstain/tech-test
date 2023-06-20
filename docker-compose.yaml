@@ -15,6 +15,8 @@ services:
       - POSTGRES_USER=manager
 
     restart: "on-failure"
+    networks:
+      - intern
 
   backend:
     container_name: backend
@@ -25,13 +27,17 @@ services:
                     poetry run python manage.py migrate &&
                     gunicorn moviesmanager.wsgi:application --bind 0.0.0.0:8000"
 
-    volumes: 
+    volumes:
         - ./:/app
 
     restart: "on-failure"
-    
-    depends_on: 
+
+    depends_on:
         - db
+    networks:
+      - intern
+    expose:
+      - 8000
 
   nginxrp:
     container_name: nginxrp
@@ -42,8 +48,11 @@ services:
     volumes:
       - ./staticfiles:/staticfiles
 
-    depends_on: 
+    depends_on:
         - backend
+        - frontend
+    networks:
+      - intern
 
   rabbitmq:
     image: rabbitmq:latest
@@ -52,8 +61,10 @@ services:
       - 5672:5672
       - 15672:15672
 
-    depends_on: 
+    depends_on:
       - backend
+    networks:
+      - intern
 
   celeryworker:
     container_name: celeryworker
@@ -63,8 +74,25 @@ services:
     command: celery -A moviesmanager.celery worker --pool=prefork -l info
     depends_on:
       - rabbitmq
+    networks:
+      - intern
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    volumes:
+      - ./client:/app
+    command: sh -c "npm run preview -- --host"
+    ports:
+      - 9090:4173
+    expose:
+      - 9090
 
 
 volumes:
   db_data:
   rabbitmq_data:
+
+networks:
+  intern:
+    name: intern
