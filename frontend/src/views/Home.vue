@@ -8,7 +8,7 @@ const goToMovies = () => router.push({ name: 'movies' });
 
 <template>
   <h1>Movie Manager</h1>
-  <button @click="goToMovies">See movies</button>
+  <v-btn @click="goToMovies">See movies</v-btn>
 </template>
 
 <style scoped>

@@ -9,7 +9,7 @@ const store = useStore();
 const route = useRoute();
 
 const isEditing = ref(false);
-const grade = ref(null);
+const grade = ref(1);
 const rating = ref({
   1: '1',
   2: '2',
@@ -34,9 +34,6 @@ const review = () => {
 };
 
 const edit = () => {
-  if (!isEditing.value) {
-    store.dispatch('getActors');
-  }
   isEditing.value = !isEditing.value;
 }
 
