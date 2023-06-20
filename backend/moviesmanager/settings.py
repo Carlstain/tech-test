@@ -12,21 +12,27 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5gpki@=1fu%7&p1bthp1)hp+a@h=z$s=@43$3eg&=jvhkx5w3!"
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", default=False)
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
 
 
 # Application definition
@@ -82,8 +88,12 @@ WSGI_APPLICATION = "moviesmanager.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("DB_NAME"),
+        "USER": env.str("DB_USER"),
+        "PASSWORD": env.str("DB_PWD"),
+        "HOST": env.str("DB_HOST"),
+        "PORT": env.int("DB_PORT"),
     }
 }
 
@@ -132,3 +142,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
 }
+
+CELERY_BROKER_URL = f"amqp://{env.str('CELERY_BROKER_USERNAME')}:{env.str('CELERY_BROKER_PASSWORD')}@{env.str('CELERY_BROKER_HOST')}:{env.str('CELERY_BROKER_PORT')}"

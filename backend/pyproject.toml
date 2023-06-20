@@ -4,13 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Mahadi Eric <rickyblackwall@gmail.com>"]
 readme = "README.md"
-packages = [{include = "movies_manager"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 Django = "^4.2.2"
 django-rest-framework = "^0.1.0"
 django-cors-headers = "^4.1.0"
+django-environ = "^0.10.0"
+psycopg2 = "^2.9.6"
 celery = "^5.3.1"
 
 

@@ -1,0 +1,98 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: database
+    image: postgres:latest
+
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+    environment:
+      - POSTGRES_PASSWORD=supercoolpassword
+      - POSTGRES_DB=movies
+      - PGPORT=5432
+      - POSTGRES_USER=manager
+
+    restart: "on-failure"
+    networks:
+      - intern
+
+  backend:
+    container_name: backend
+
+    build: ./backend
+
+    command: sh -c "poetry run python manage.py makemigrations &&
+                    poetry run python manage.py migrate &&
+                    gunicorn moviesmanager.wsgi:application --bind 0.0.0.0:8000"
+
+    volumes:
+        - ./:/app
+
+    restart: "on-failure"
+
+    depends_on:
+        - db
+    networks:
+      - intern
+    expose:
+      - 8000
+
+  nginxrp:
+    container_name: nginxrp
+    restart: always
+    build: ./nginxserver
+    ports:
+      - 8000:80
+    volumes:
+      - ./staticfiles:/staticfiles
+
+    depends_on:
+        - backend
+        - frontend
+    networks:
+      - intern
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+    depends_on:
+      - backend
+    networks:
+      - intern
+
+  celeryworker:
+    container_name: celeryworker
+    build: ./backend
+    volumes:
+      - ./:/backend
+    command: celery -A moviesmanager.celery worker --pool=prefork -l info
+    depends_on:
+      - rabbitmq
+    networks:
+      - intern
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    volumes:
+      - ./client:/app
+    command: sh -c "npm run preview -- --host"
+    ports:
+      - 9090:4173
+    expose:
+      - 9090
+
+
+volumes:
+  db_data:
+  rabbitmq_data:
+
+networks:
+  intern:
+    name: intern
