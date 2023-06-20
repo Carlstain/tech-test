@@ -23,7 +23,7 @@ const store = createStore({
     },
 
     actions: {
-        getMovies({ commit }, endpoint="http://localhost:8000/rest-api/movies/") {
+        getMovies({ commit }, endpoint='movies/') {
           axios.get(endpoint).then(
               (response) => {
                   commit('setMovies', response.data);
@@ -31,7 +31,7 @@ const store = createStore({
           );
         },
         getMovie({ commit }, movieId) {
-            axios.get(`http://localhost:8000/rest-api/movies/${movieId}/`).then(
+            axios.get(`movies/${movieId}/`).then(
                 (response) => {
                     commit('setMovie', response.data)
                 }
@@ -39,7 +39,7 @@ const store = createStore({
         },
         editMovie({ commit }, { movieId, data}) {
           axios.patch(
-              `http://localhost:8000/rest-api/movies/${movieId}/`,
+              `movies/${movieId}/`,
               data
           ).then(
               (response) => {
@@ -49,7 +49,7 @@ const store = createStore({
         },
         rateMovie({ commit, dispatch }, {movieId, grade}) {
             axios.post(
-                `http://localhost:8000/rest-api/movies/${movieId}/review/`,
+                `movies/${movieId}/review/`,
                 { grade }
                 )
                 .then((response) => {
@@ -57,7 +57,7 @@ const store = createStore({
                 })
         },
         getActors({ commit }) {
-          axios.get(`http://localhost:8000/rest-api/actors/`)
+          axios.get('actors/')
               .then(
                   (response) => commit('setActors', response.data)
               )
