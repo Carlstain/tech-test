@@ -47,7 +47,7 @@ const save = () => {
         label="Actors"
         v-model="body.actors"
         :items="actorsList"
-        item-title="first_name"
+        :item-title="(({first_name, last_name}) => `${first_name} ${last_name}`)"
         item-value="id"
         multiple
       />

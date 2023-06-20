@@ -1,22 +1,30 @@
 <script setup>
-  defineProps({
+  import {computed} from "vue";
+  import {useStore} from "vuex";
+
+  const props = defineProps({
     actors: {
       type: Array,
       default: () => [],
     },
     description: String
   })
+
+  const store = useStore();
+
+  const actor_names = computed(
+      () => store.state.actors.filter(({ id }) => props.actors.includes(id))
+          .map(({first_name, last_name}) => `${first_name} ${last_name}`)
+  );
 </script>
 
 <template>
   <v-card-text>
     <p class="description">{{ description }}</p>
     <p>
-      <span class="font-weight-bold">With: </span> {{ actors.toString() }}
+      <span class="font-weight-bold">With: </span> {{ actor_names.toString() }}
     </p>
   </v-card-text>
-  <v-card-actions>
-  </v-card-actions>
 </template>
 
 <style scoped>
